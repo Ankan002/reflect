@@ -1,8 +1,14 @@
 "use client";
 
 import { Logo } from "@/components/brand";
+import { useLoginSection } from "./hook";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const LoginSection = () => {
+	const { email, onEmailChange } = useLoginSection();
+
 	return (
 		<div className="flex-1 flex flex-col">
 			<div className="w-full flex items-center px-3 py-2">
@@ -14,6 +20,30 @@ const LoginSection = () => {
 					<div className="text-4xl text-primary font-semibold tracking-wide w-full font-quicksand">
 						Welcome Back
 					</div>
+
+					<div className="text-base font-medium text-muted-foreground tracking-wide w-full font-quicksand mt-5">
+						{"Let's"} have a final check on your authenticity before
+						getting back to your artistic gallery.
+					</div>
+
+					<div className="w-full mt-5">
+						<div className="flex flex-col w-full mt-3">
+							<Label htmlFor="email" className="text-foreground">
+								Email
+							</Label>
+
+							<Input
+								id="email"
+								type="email"
+								placeholder="abc@gmail.com"
+								className="mt-1.5 text-foreground focus:ring-1"
+								value={email}
+								onChange={onEmailChange}
+							/>
+						</div>
+					</div>
+
+					<Button className="w-full mt-5 items-center">Login</Button>
 				</div>
 			</div>
 		</div>
