@@ -1,6 +1,6 @@
 import { JsonWebTokenError } from "jsonwebtoken";
 import type { ActionController } from "@/types/api";
-import type { APIError } from "@/types/error";
+import { APIError } from "@/types/error";
 
 export const actionHandler =
 	<D = void, A = Record<string, never>>(
