@@ -12,6 +12,8 @@ export default {
 			fontFamily: {
 				"geist-sans": ["var(--font-geist-sans)"],
 				"geist-mono": ["var(--font-geist-mono)"],
+				"tilt-neon": "'Tilt Neon', sans-serif",
+				quicksand: "'Quicksand', sans-serif",
 			},
 			borderRadius: {
 				lg: "var(--radius)",
