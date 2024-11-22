@@ -14,6 +14,7 @@ export default {
 				"geist-mono": ["var(--font-geist-mono)"],
 				"tilt-neon": "'Tilt Neon', sans-serif",
 				quicksand: "'Quicksand', sans-serif",
+				brand: "'Chakra Petch', sans-serif",
 			},
 			borderRadius: {
 				lg: "var(--radius)",

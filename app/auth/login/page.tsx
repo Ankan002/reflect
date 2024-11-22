@@ -1,11 +1,12 @@
 import AuthCover from "@/assets/images/auth/auth-hero.jpg";
 import { ThemeToggler } from "@/components/common";
+import { LoginSection } from "@/components/login-page";
 import Image from "next/image";
 
 const LoginPage = () => {
 	return (
 		<main className="w-full min-h-screen bg-background flex font-geist-sans">
-			<div className="flex-1 flex flex-col"></div>
+			<LoginSection />
 
 			<div className="md:w-1/2 h-screen hidden md:flex flex-col">
 				<Image
