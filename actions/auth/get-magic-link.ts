@@ -1,11 +1,11 @@
 "use server";
 
 import { APIError } from "@/types/error";
-import { actionHandler, getPrismaClient } from "@/utils/server";
+import { actionHandler, getPrismaClient, sendMagicLink } from "@/utils/server";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { MagicLinkTokenData } from "@/types/common";
-import { MAGIC_TOKEN_SECRET } from "@/constants/env";
+import { BASE_DOMAIN, MAGIC_TOKEN_SECRET } from "@/constants/env";
 
 const ArgsSchema = z.object({
 	email: z
@@ -55,6 +55,11 @@ export const getMagicLink = actionHandler<undefined, Args>(async (args) => {
 			MAGIC_TOKEN_SECRET,
 		);
 
+		await sendMagicLink({
+			recipient: requestBody.email,
+			magicLink: `${BASE_DOMAIN}/auth/magic-link?token=${magicLinkToken}&new-account=true`,
+		});
+
 		console.log(magicLinkToken);
 
 		return {
@@ -75,7 +80,10 @@ export const getMagicLink = actionHandler<undefined, Args>(async (args) => {
 		MAGIC_TOKEN_SECRET,
 	);
 
-	console.log(magicLinkToken);
+	await sendMagicLink({
+		recipient: requestBody.email,
+		magicLink: `${BASE_DOMAIN}/auth/magic-link?token=${magicLinkToken}&new-account=false`,
+	});
 
 	return {
 		success: true,
