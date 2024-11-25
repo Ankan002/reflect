@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const LoginSection = () => {
-	const { email, onEmailChange } = useLoginSection();
+	const { email, onEmailChange, onLoginClickHandler } = useLoginSection();
 
 	return (
 		<div className="flex-1 flex flex-col">
@@ -43,7 +43,12 @@ const LoginSection = () => {
 						</div>
 					</div>
 
-					<Button className="w-full mt-5 items-center">Login</Button>
+					<Button
+						className="w-full mt-5 items-center"
+						onClick={onLoginClickHandler}
+					>
+						Login
+					</Button>
 				</div>
 			</div>
 		</div>
