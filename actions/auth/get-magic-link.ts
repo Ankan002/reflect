@@ -53,14 +53,15 @@ export const getMagicLink = actionHandler<undefined, Args>(async (args) => {
 				data: tokenData,
 			},
 			MAGIC_TOKEN_SECRET,
+			{
+				expiresIn: "10m",
+			},
 		);
 
 		await sendMagicLink({
 			recipient: requestBody.email,
 			magicLink: `${BASE_DOMAIN}/auth/magic-link?token=${magicLinkToken}&new-account=true`,
 		});
-
-		console.log(magicLinkToken);
 
 		return {
 			success: true,
@@ -78,6 +79,9 @@ export const getMagicLink = actionHandler<undefined, Args>(async (args) => {
 			data: tokenData,
 		},
 		MAGIC_TOKEN_SECRET,
+		{
+			expiresIn: "5m",
+		},
 	);
 
 	await sendMagicLink({
