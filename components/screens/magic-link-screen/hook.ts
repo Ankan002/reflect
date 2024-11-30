@@ -11,6 +11,8 @@ export const useMagicLinkScreen = () => {
 	const [isNewAccount, setIsNewAccount] = useState<boolean>(false);
 	const [name, setName] = useState<string>("");
 
+	const onVerifyMagicLink = async () => {};
+
 	useEffect(() => {
 		loadRef.current = true;
 
