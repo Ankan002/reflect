@@ -6,9 +6,15 @@ import { LoaderCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 const MagicLinkScreen = () => {
-	const { isNewAccount, name, onNameChange } = useMagicLinkScreen();
+	const { isNewAccount, name, onNameChange, onVerifyMagicLink } =
+		useMagicLinkScreen();
+
+	useEffect(() => {
+		console.log(isNewAccount);
+	}, [isNewAccount]);
 
 	return (
 		<main className="h-screen w-full flex flex-col bg-background font-quicksand">
@@ -50,7 +56,10 @@ const MagicLinkScreen = () => {
 								/>
 							</div>
 
-							<Button className="w-full mt-5 items-center">
+							<Button
+								className="w-full mt-5 items-center"
+								onClick={onVerifyMagicLink}
+							>
 								Complete Details
 							</Button>
 						</div>
