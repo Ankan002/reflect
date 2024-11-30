@@ -82,7 +82,7 @@ export const verifyMagicLink = actionHandler<undefined, Args>(async (args) => {
 	cookieStore.set(AUTH_COOKIE_NAME, authToken, {
 		httpOnly: true,
 		secure: ENV === "production",
-		expires: 1000 * 60 * 60 * 24 * 365,
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 365,
 	});
 
 	return {
