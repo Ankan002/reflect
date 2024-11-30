@@ -5,9 +5,11 @@ import { useLoginSection } from "./hook";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const LoginSection = () => {
-	const { email, onEmailChange, onLoginClickHandler } = useLoginSection();
+	const { email, onEmailChange, onLoginClickHandler, isLoading } =
+		useLoginSection();
 
 	return (
 		<div className="flex-1 flex flex-col">
@@ -46,7 +48,11 @@ const LoginSection = () => {
 					<Button
 						className="w-full mt-5 items-center"
 						onClick={onLoginClickHandler}
+						disabled={isLoading}
 					>
+						{isLoading && (
+							<Loader2 className="text-primary-foreground animate-spin" />
+						)}
 						Login
 					</Button>
 				</div>
