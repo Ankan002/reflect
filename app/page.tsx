@@ -3,11 +3,13 @@ import { DashboardProvider } from "@/components/providers";
 
 export default function Home() {
 	return (
-		<div className="h-screen w-full flex flex-col items-center justify-center bg-background">
-			<DashboardProvider>
-				<></>
+		<>
+			<DashboardProvider heading="New Chat">
+				<main className="w-full min-h-screen bg-background flex flex-col px-2">
+					{/* <p>Home</p> */}
+				</main>
 			</DashboardProvider>
 			<ThemeToggler />
-		</div>
+		</>
 	);
 }

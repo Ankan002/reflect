@@ -1,5 +1,6 @@
 "use client";
 
+import { CommonSidebar } from "@/components/common";
 import {
 	SidebarInset,
 	SidebarProvider,
@@ -8,15 +9,20 @@ import {
 
 interface Props {
 	children: React.ReactNode;
+	heading: string;
 }
 
 const DashboardProvider = (props: Props) => {
-	const { children } = props;
+	const { children, heading } = props;
 
 	return (
 		<SidebarProvider>
+			<CommonSidebar />
 			<SidebarInset>
-				<SidebarTrigger />
+				<div className="w-full flex items-center m-2">
+					<SidebarTrigger className="text-primary" />
+					<p className="text-primary text-lg ml-1">{heading}</p>
+				</div>
 				{children}
 			</SidebarInset>
 		</SidebarProvider>
