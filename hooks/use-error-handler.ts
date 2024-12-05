@@ -9,6 +9,8 @@ export const useAPIErrorHandler = () => {
 	const router = useRouter();
 	const { setIsAuthenticated } = useAuthStateStore();
 
+	//TODO: Remove auth token from here fpr preventing infinite load
+
 	const protectedAPIErrorHandler =
 		(customHandler?: ErrorHandlerFunc) => (error: unknown) => {
 			if (error instanceof Error) {

@@ -1,23 +1,39 @@
 import { verifyMagicLink } from "@/actions/auth";
 import { useAPIErrorHandler } from "@/hooks";
+import { useToast } from "@/hooks/use-toast";
+import { useAuthStateStore } from "@/store";
 import { onTextInputChange } from "@/utils/client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export const useMagicLinkScreen = () => {
 	const pathParams = useSearchParams();
+	const router = useRouter();
 
 	const loadRef = useRef<boolean>(false);
 
+	const { setIsAuthenticated } = useAuthStateStore();
+
 	const [magicToken, setMagicToken] = useState<string>("");
 	const [isNewAccount, setIsNewAccount] = useState<boolean | null>(null);
+	const [isCreatingAccount, setIsCreatingAccount] = useState<boolean>(false);
 	const [name, setName] = useState<string>("");
 
 	const { APIErrorHandler } = useAPIErrorHandler();
 
+	const { toast } = useToast();
+
 	const verifyMagicLinkErrorHandler = APIErrorHandler();
 
 	const onVerifyMagicLink = async () => {
+		if (isCreatingAccount) {
+			toast({
+				title: "Creating account, hold on!",
+				variant: "destructive",
+			});
+			return;
+		}
+
 		try {
 			const payload: {
 				token: string;
@@ -30,10 +46,23 @@ export const useMagicLinkScreen = () => {
 				payload["name"] = name;
 			}
 
+			setIsCreatingAccount(true);
+
 			const response = await verifyMagicLink(payload);
 
-			console.log(response);
+			if (!response.success) {
+				throw new Error(response.error);
+			}
+
+			setIsCreatingAccount(false);
+
+			setIsAuthenticated(true);
+			router.replace("/");
+			toast({
+				title: "Logged in successfully!",
+			});
 		} catch (error) {
+			setIsCreatingAccount(false);
 			verifyMagicLinkErrorHandler(error);
 		}
 	};
@@ -50,7 +79,7 @@ export const useMagicLinkScreen = () => {
 			pathParams.get("new-account") === "false"
 		) {
 			setIsNewAccount(
-				pathParams.get("new-account") === "true" ? true : false,
+				pathParams.get("new-account") === "true" ? true : false
 			);
 		}
 	}, [pathParams]);

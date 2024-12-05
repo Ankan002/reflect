@@ -7,7 +7,7 @@ import { verify, JwtPayload } from "jsonwebtoken";
 import { AuthTokenData } from "@/types/common";
 
 interface AuthPayload extends JwtPayload {
-	data?: AuthTokenData;
+	user?: AuthTokenData;
 }
 
 export const verifyAuthToken = async () => {
@@ -20,9 +20,11 @@ export const verifyAuthToken = async () => {
 
 	const decodedPayload = verify(authCookie, AUTH_TOKEN_SECRET) as AuthPayload;
 
-	if (!decodedPayload.data) {
+	console.log(decodedPayload);
+
+	if (!decodedPayload.user) {
 		throw new APIError("Invalid token", 401);
 	}
 
-	return decodedPayload.data;
+	return decodedPayload.user;
 };

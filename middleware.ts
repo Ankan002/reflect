@@ -12,27 +12,30 @@ export const middleware = (request: NextRequest) => {
 	const currentUrl = request.nextUrl.pathname;
 
 	console.log(authCookie);
+	console.log(currentUrl);
 
 	for (const matcher of PROTECTED_MATCHERS) {
 		if (currentUrl.startsWith(matcher)) {
 			if (!authCookie) {
 				return NextResponse.redirect(
-					new URL(LOGIN_URL, request.nextUrl.origin).toString(),
+					new URL(LOGIN_URL, request.nextUrl.origin).toString()
 				);
 			}
 		}
 	}
 
 	if (PROTECTED_ROUTES.has(currentUrl)) {
+		console.log("HERE!");
 		if (!authCookie) {
+			console.log("HERE!!");
 			return NextResponse.redirect(
-				new URL(LOGIN_URL, request.nextUrl.origin).toString(),
+				new URL(LOGIN_URL, request.nextUrl.origin).toString()
 			);
 		}
 	} else if (UNPROTECTED_ROUTES.has(currentUrl)) {
 		if (authCookie) {
 			return NextResponse.redirect(
-				new URL(BASE_URL, request.nextUrl.origin).toString(),
+				new URL(BASE_URL, request.nextUrl.origin).toString()
 			);
 		}
 	}
