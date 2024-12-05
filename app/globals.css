@@ -37,6 +37,14 @@ body {
 		--chart-4: 43 74% 66%;
 		--chart-5: 27 87% 67%;
 		--radius: 0.5rem;
+		--sidebar-background: 0 0% 98%; /* Match the main background for integration */
+		--sidebar-foreground: 240 5.3% 26.1%; /* Ensure text is readable against the background */
+		--sidebar-primary: 240 5.9% 10%; /* A distinct, bold primary for sidebar highlights */
+		--sidebar-primary-foreground: 0 0% 98%; /* Ensure contrast for primary text */
+		--sidebar-accent: 240 4.8% 95.9%; /* Subtle accent for sidebar interaction elements */
+		--sidebar-accent-foreground: 240 5.9% 10%; /* Text on accent elements */
+		--sidebar-border: 220 13% 91%; /* Soft, unobtrusive border for visual separation */
+		--sidebar-ring: 217.2 91.2% 59.8%; /* Highlight for focus or active states */
 	}
 	.dark {
 		--background: 222.2 84% 4.9%;
@@ -63,6 +71,14 @@ body {
 		--chart-3: 30 80% 55%;
 		--chart-4: 280 65% 60%;
 		--chart-5: 340 75% 55%;
+		--sidebar-background: 240 5.9% 10%; /* Slightly lighter than the main dark background */
+		--sidebar-foreground: 240 4.8% 95.9%; /* Consistent readable text in dark mode */
+		--sidebar-primary: 224.3 76.3% 48%; /* Strong emphasis in dark mode */
+		--sidebar-primary-foreground: 0 0% 100%; /* Ensure legibility on primary elements */
+		--sidebar-accent: 240 3.7% 15.9%; /* Secondary tone for subtle accents */
+		--sidebar-accent-foreground: 240 4.8% 95.9%; /* Text on dark mode accent elements */
+		--sidebar-border: 240 3.7% 15.9%; /* Dark muted border for separation */
+		--sidebar-ring: 217.2 91.2% 59.8%; /* Focus/active visual cue */
 	}
 }
 
