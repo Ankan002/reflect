@@ -1,4 +1,4 @@
-import { Bolt, FilePlus2 } from "lucide-react";
+import { Bolt, FilePlus2, GalleryVertical } from "lucide-react";
 
 export const SidebarNavItems = [
 	{
@@ -12,5 +12,11 @@ export const SidebarNavItems = [
 		title: "Settings",
 		Icon: Bolt,
 		link: "/settings",
+	},
+	{
+		id: 3,
+		title: "Gallery",
+		Icon: GalleryVertical,
+		link: "/gallery",
 	},
 ];

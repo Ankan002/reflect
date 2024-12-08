@@ -50,6 +50,15 @@ model image_gen_chat {
   chats      image_gen_chat_message[]
 }
 
+model chat_config {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  number_of_output Int
+  aspect_ratio     String
+  output_format    String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+}
+
 model image_gen_chat_message {
   id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   role       ChatRole
