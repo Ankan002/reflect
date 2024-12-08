@@ -28,7 +28,8 @@ interface Props {
 const DashboardProvider = (props: Props) => {
 	const { children, heading } = props;
 
-	const { isAppLoaded, isUserLoading, user, theme } = useDashboardProvider();
+	const { isAppLoaded, isUserLoading, user, theme, onLogout } =
+		useDashboardProvider();
 
 	return (
 		<SidebarProvider>
@@ -64,7 +65,10 @@ const DashboardProvider = (props: Props) => {
 										{user.name}
 									</DropdownMenuItem>
 
-									<DropdownMenuItem className="cursor-pointer text-destructive hover:bg-destructive/20 hover:text-destructive-foreground">
+									<DropdownMenuItem
+										className="cursor-pointer text-destructive hover:bg-destructive/20 hover:text-destructive-foreground"
+										onClick={onLogout}
+									>
 										<LogOut />
 										Logout
 									</DropdownMenuItem>
