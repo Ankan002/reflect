@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@radix-ui/react-label";
 import { useSettingsScreen } from "./hook";
+import { Key } from "lucide-react";
 
 const SettingsScreen = () => {
 	const { theme, onThemeChange } = useSettingsScreen();
@@ -20,8 +21,14 @@ const SettingsScreen = () => {
 			<div className="w-full flex flex-col items-center font-geist-sans mt-5 text-primary">
 				<div className="w-full max-w-[1000px] flex flex-col">
 					<div className="flex flex-col w-full">
-						<Label>Replicate API Key</Label>
-						<Input className="mt-2 border-foreground" />
+						<Label className="flex items-center">
+							<Key className="mr-2" size={18} />
+							Replicate API Key
+						</Label>
+						<Input
+							className="mt-2 border-foreground"
+							placeholder="xxxxxx-xxxxxx-xxxxxx-xxxxxxx"
+						/>
 					</div>
 					<div className="w-full flex items-center justify-between mt-5">
 						<p className="text-lg">Theme</p>
