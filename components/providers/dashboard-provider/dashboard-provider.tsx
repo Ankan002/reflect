@@ -19,7 +19,7 @@ const DashboardProvider = (props: Props) => {
 		<SidebarProvider>
 			<CommonSidebar />
 			<SidebarInset>
-				<div className="w-full flex items-center m-2">
+				<div className="w-full flex items-center my-2 px-2">
 					<SidebarTrigger className="text-primary" />
 					<p className="text-primary text-lg ml-1">{heading}</p>
 				</div>
