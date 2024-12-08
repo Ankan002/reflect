@@ -17,11 +17,15 @@ export const getCurrentUser = actionHandler<Response>(async () => {
 
 	const prisma = getPrismaClient();
 
+	console.log("HERE");
+
 	const user = await prisma.user.findUnique({
 		where: {
 			id,
 		},
 	});
+
+	console.log("HERE2");
 
 	if (!user) {
 		throw new APIError("No user found", 404);

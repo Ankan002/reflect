@@ -4,14 +4,14 @@ import { APIError } from "@/types/error";
 
 export const actionHandler =
 	<D = void, A = Record<string, never>>(
-		controllerFunc: ActionController<D, A>,
+		controllerFunc: ActionController<D, A>
 	): ActionController<D, A> =>
 	async (args?: A) => {
 		try {
 			return await Promise.resolve(controllerFunc(args));
 		} catch (error) {
-			console.log(error);
 			if (error instanceof JsonWebTokenError) {
+				console.log(error);
 				return {
 					success: false,
 					code: 401,
