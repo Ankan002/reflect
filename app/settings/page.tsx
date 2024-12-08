@@ -1,13 +1,5 @@
-import { ThemeToggler } from "@/components/common";
 import { SettingsScreen } from "@/components/screens";
 
-const SettingsPage = () => {
-	return (
-		<>
-			<SettingsScreen />
-			<ThemeToggler />
-		</>
-	);
-};
+const SettingsPage = () => <SettingsScreen />;
 
 export default SettingsPage;

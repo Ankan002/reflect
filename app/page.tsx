@@ -1,4 +1,3 @@
-import { ThemeToggler } from "@/components/common";
 import { DashboardProvider } from "@/components/providers";
 
 export default function Home() {
@@ -9,7 +8,6 @@ export default function Home() {
 					{/* <p>Home</p> */}
 				</main>
 			</DashboardProvider>
-			<ThemeToggler />
 		</>
 	);
 }
