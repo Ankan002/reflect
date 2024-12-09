@@ -21,6 +21,8 @@ const SettingsScreen = () => {
 		onReplicateApiKeyValueChange,
 		replicateApiKeyValue,
 		isFetchingReplicateKey,
+		onAPIKeyInputDeFocus,
+		isSavingReplicateAPIKey,
 	} = useSettingsScreen();
 
 	return (
@@ -40,6 +42,8 @@ const SettingsScreen = () => {
 								placeholder="xxxxxx-xxxxxx-xxxxxx-xxxxxxx"
 								value={replicateApiKeyValue}
 								onChange={onReplicateApiKeyValueChange}
+								onBlur={onAPIKeyInputDeFocus}
+								disabled={isSavingReplicateAPIKey}
 							/>
 						</div>
 					)}

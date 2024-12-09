@@ -1,4 +1,4 @@
-import { getAPIKeyAction } from "@/actions/api-key";
+import { getAPIKeyAction, upsertAPIKeyAction } from "@/actions/api-key";
 import { THEME_KEY } from "@/constants/env";
 import { useAPIErrorHandler } from "@/hooks";
 import { useThemeStore } from "@/store";
@@ -12,12 +12,16 @@ export const useSettingsScreen = () => {
 
 	const [replicateApiKeyValue, setReplicateApiKeyValue] =
 		useState<string>("");
+	const [oldApiKey, setOldApiKey] = useState<string>("");
 	const [isFetchingReplicateKey, setIsFetchingReplicateKey] =
+		useState<boolean>(false);
+	const [isSavingReplicateAPIKey, setIsSavingReplicateAPIKey] =
 		useState<boolean>(false);
 
 	const { protectedAPIErrorHandler } = useAPIErrorHandler();
 
 	const fetchReplicateApiKeyErrorHandler = protectedAPIErrorHandler();
+	const deFocusReplicateKeyErrorHandler = protectedAPIErrorHandler();
 
 	const onThemeChange = (value: string) => {
 		if (value === "light") {
@@ -26,6 +30,42 @@ export const useSettingsScreen = () => {
 		} else {
 			setTheme("dark");
 			localStorage.setItem(THEME_KEY, "dark");
+		}
+	};
+
+	const onAPIKeyInputDeFocus = async () => {
+		if (isSavingReplicateAPIKey) return;
+
+		if (oldApiKey === replicateApiKeyValue) return;
+
+		setIsSavingReplicateAPIKey(true);
+		try {
+			const response = await upsertAPIKeyAction({
+				replicate_key: replicateApiKeyValue,
+			});
+
+			setIsSavingReplicateAPIKey(false);
+
+			if (response.code === 401) {
+				throw new Error("401");
+			}
+
+			if (!response.success) {
+				setReplicateApiKeyValue(oldApiKey);
+				throw new Error(response.error);
+			}
+
+			if (!response.data) {
+				setReplicateApiKeyValue(oldApiKey);
+				throw new Error("Something went wrong");
+			}
+
+			console.log(response);
+
+			setOldApiKey(replicateApiKeyValue);
+		} catch (error) {
+			setIsSavingReplicateAPIKey(false);
+			deFocusReplicateKeyErrorHandler(error);
 		}
 	};
 
@@ -45,6 +85,7 @@ export const useSettingsScreen = () => {
 
 			if (apiKeyResponse.data && apiKeyResponse.data.api_key) {
 				setReplicateApiKeyValue(apiKeyResponse.data.api_key.key);
+				setOldApiKey(apiKeyResponse.data.api_key.key);
 			}
 		} catch (error) {
 			setIsFetchingReplicateKey(false);
@@ -67,5 +108,7 @@ export const useSettingsScreen = () => {
 			setReplicateApiKeyValue
 		),
 		isFetchingReplicateKey,
+		onAPIKeyInputDeFocus,
+		isSavingReplicateAPIKey
 	};
 };
