@@ -3,6 +3,7 @@ import { useAPIErrorHandler } from "@/hooks";
 import { useImageChatsStateStore, useThemeStore } from "@/store";
 import { OutputAspectRatio } from "@/types/common";
 import { onTextInputChange } from "@/utils/client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const OutputFormatOptions = [
@@ -85,6 +86,8 @@ const AspectRatioOptions = [
 export const useCreateScreen = () => {
 	const { theme } = useThemeStore();
 
+	const router = useRouter();
+
 	const [chatName, setChatName] = useState<string>("");
 	const [outputFormat, setOutputFormat] = useState<string>("png");
 	const [numberOfOutputs, setNumberOfOutputs] = useState<string>("4");
@@ -127,6 +130,7 @@ export const useCreateScreen = () => {
 			console.log(response);
 
 			addChat(response.data.chat);
+			router.replace(`/chat/${response.data.chat.id}`);
 		} catch (error) {
 			setIsCreatingChat(false);
 			createChatErrorHandler(error);
