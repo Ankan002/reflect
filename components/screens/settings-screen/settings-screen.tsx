@@ -27,7 +27,7 @@ const SettingsScreen = () => {
 
 	return (
 		<DashboardProvider heading="Settings">
-			<div className="w-full flex flex-col items-center font-geist-sans mt-5 text-primary">
+			<div className="w-full flex flex-col items-center font-geist-sans mt-5 text-primary px-5">
 				<div className="w-full max-w-[1000px] flex flex-col">
 					{isFetchingReplicateKey ? (
 						<Skeleton className="w-full flex h-10 bg-accent" />

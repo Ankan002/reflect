@@ -35,49 +35,53 @@ const DashboardProvider = (props: Props) => {
 		<SidebarProvider>
 			<CommonSidebar />
 			<SidebarInset>
-				<div className="w-full flex justify-between items-center my-2 px-2">
-					<div className="flex items-center">
-						<SidebarTrigger className="text-primary" />
-						<p className="text-primary text-lg ml-1">{heading}</p>
-					</div>
-					<div>
-						{isUserLoading || !isAppLoaded || !user ? (
-							<Skeleton className="h-10 w-10 rounded-full bg-secondary border border-foreground" />
-						) : (
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Avatar className="cursor-pointer">
-										<BoringAvatar
-											name={user.email.split("@")[0]}
-											variant="marble"
-										/>
-									</Avatar>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent
-									className={`${theme} bg-background mr-1 border-foreground font-geist-sans`}
-								>
-									<DropdownMenuLabel className="font-medium">
-										Profile
-									</DropdownMenuLabel>
-									<DropdownMenuSeparator className="border-t border-foreground" />
-									<DropdownMenuItem>
-										<User />
-										{user.name}
-									</DropdownMenuItem>
-
-									<DropdownMenuItem
-										className="cursor-pointer text-destructive hover:bg-destructive/20 hover:text-destructive-foreground"
-										onClick={onLogout}
+				<div className="w-full min-h-screen flex flex-col">
+					<div className="w-full flex justify-between items-center my-2 px-2">
+						<div className="flex items-center">
+							<SidebarTrigger className="text-primary" />
+							<p className="text-primary text-lg ml-1">
+								{heading}
+							</p>
+						</div>
+						<div>
+							{isUserLoading || !isAppLoaded || !user ? (
+								<Skeleton className="h-10 w-10 rounded-full bg-secondary border border-foreground" />
+							) : (
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Avatar className="cursor-pointer">
+											<BoringAvatar
+												name={user.email.split("@")[0]}
+												variant="marble"
+											/>
+										</Avatar>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent
+										className={`${theme} bg-background mr-1 border-foreground font-geist-sans`}
 									>
-										<LogOut />
-										Logout
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
-						)}
+										<DropdownMenuLabel className="font-medium">
+											Profile
+										</DropdownMenuLabel>
+										<DropdownMenuSeparator className="border-t border-foreground" />
+										<DropdownMenuItem>
+											<User />
+											{user.name}
+										</DropdownMenuItem>
+
+										<DropdownMenuItem
+											className="cursor-pointer text-destructive hover:bg-destructive/20 hover:text-destructive-foreground"
+											onClick={onLogout}
+										>
+											<LogOut />
+											Logout
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+							)}
+						</div>
 					</div>
+					{children}
 				</div>
-				{children}
 			</SidebarInset>
 		</SidebarProvider>
 	);
