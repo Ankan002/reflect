@@ -1,9 +1,18 @@
-import { createGenerateImageRequestAction } from "@/actions/generate-image";
+import {
+	createGenerateImageRequestAction,
+	getChatMessagesAction,
+} from "@/actions/generate-image";
 import { getImageChatAction } from "@/actions/image-chat";
 import { useAPIErrorHandler } from "@/hooks";
 import { onTextareaInputChange } from "@/utils/client";
-import { chat_config, image_gen_chat } from "@prisma/client";
+import {
+	ai_image,
+	chat_config,
+	image_gen_chat,
+	image_gen_chat_message,
+} from "@prisma/client";
 import { useEffect, useState } from "react";
+import { set } from "zod";
 
 interface Args {
 	id: string;
@@ -13,14 +22,21 @@ type ImageGenChat = image_gen_chat & {
 	chat_config: chat_config | null;
 };
 
+type ImageGenChatMessage = image_gen_chat_message & {
+	images?: ai_image[];
+};
+
 export const useChatScreen = (args: Args) => {
 	const [chat, setChat] = useState<image_gen_chat | null>(null);
 	const [isLoadingChat, setIsLoadingChat] = useState(false);
 	const [chatConfig, setChatConfig] = useState<chat_config | null>(null);
 	const [prompt, setPrompt] = useState<string>("");
+	const [messages, setMessages] = useState<ImageGenChatMessage[]>([]);
+	const [loadingMessages, setLoadingMessages] = useState(false);
 
 	const { protectedAPIErrorHandler } = useAPIErrorHandler();
 	const fetchChatErrorHandler = protectedAPIErrorHandler();
+	const fetchMessagesErrorHandler = protectedAPIErrorHandler();
 	const sendPromptErrorHandler = protectedAPIErrorHandler();
 
 	const fetchChat = async () => {
@@ -60,6 +76,39 @@ export const useChatScreen = (args: Args) => {
 		}
 	};
 
+	const fetchMessages = async () => {
+		if (loadingMessages) return;
+
+		setLoadingMessages(true);
+
+		try {
+			const response = await getChatMessagesAction({
+				id: args.id,
+			});
+
+			setLoadingMessages(false);
+
+			if (response.code === 401) {
+				throw new Error("401");
+			}
+
+			if (!response.success) {
+				throw new Error(response.error);
+			}
+
+			if (!response.data) {
+				throw new Error("Something went wrong");
+			}
+
+			console.log(response);
+
+			setMessages(response.data.messages);
+		} catch (error) {
+			setLoadingMessages(false);
+			fetchMessagesErrorHandler(error);
+		}
+	};
+
 	const onGeneratePrompt = async () => {
 		// TODO: Handle states here
 
@@ -70,6 +119,24 @@ export const useChatScreen = (args: Args) => {
 			});
 
 			console.log(response);
+
+			if (response.code === 401) {
+				throw new Error("401");
+			}
+
+			if (!response.success) {
+				throw new Error(response.error);
+			}
+
+			if (!response.data) {
+				throw new Error("Something went wrong");
+			}
+
+			setPrompt("");
+			setMessages((prev) => [
+				...(response.data?.messages ?? []),
+				...prev,
+			]);
 		} catch (error) {
 			sendPromptErrorHandler(error);
 		}
@@ -77,6 +144,7 @@ export const useChatScreen = (args: Args) => {
 
 	useEffect(() => {
 		fetchChat();
+		fetchMessages();
 	}, [args.id]);
 
 	return {
@@ -86,5 +154,7 @@ export const useChatScreen = (args: Args) => {
 		prompt,
 		onPromptChange: onTextareaInputChange(setPrompt),
 		onGeneratePrompt,
+		messages,
+		loadingMessages,
 	};
 };

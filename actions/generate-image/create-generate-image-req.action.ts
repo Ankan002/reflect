@@ -170,7 +170,7 @@ export const createGenerateImageRequestAction = actionHandler<
 		success: true,
 		code: 200,
 		data: {
-			messages: [userMessage, updatedAIMessage],
+			messages: [updatedAIMessage, userMessage],
 		},
 	};
 });
