@@ -20,6 +20,9 @@ export const getImagesAction = actionHandler<Response>(async () => {
 		where: {
 			user_id: id,
 		},
+		orderBy: {
+			created_at: "desc",
+		},
 	});
 
 	return {
