@@ -24,6 +24,9 @@ export const getImageChatsAction = actionHandler<Response>(async () => {
 			id: true,
 			name: true,
 		},
+		orderBy: {
+			created_at: "desc",
+		},
 	});
 
 	return {
