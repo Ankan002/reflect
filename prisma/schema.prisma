@@ -18,6 +18,12 @@ enum UserStatus {
   inactive
 }
 
+enum ChatStatus {
+  processing
+  delivered
+  cancelled
+}
+
 model user {
   id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name            String
@@ -41,22 +47,25 @@ model api_key {
 }
 
 model image_gen_chat {
-  id         String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String
-  user_id    String                   @db.Uuid
-  created_at DateTime                 @default(now())
-  updated_at DateTime                 @updatedAt
-  user       user                     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  chats      image_gen_chat_message[]
+  id            String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  user_id       String                   @db.Uuid
+  created_at    DateTime                 @default(now())
+  updated_at    DateTime                 @updatedAt
+  user          user                     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  chat_messages image_gen_chat_message[]
+  chat_config   chat_config?
 }
 
 model chat_config {
-  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   number_of_output Int
   aspect_ratio     String
   output_format    String
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  chat_id          String         @unique @db.Uuid
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @updatedAt
+  chat             image_gen_chat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
 }
 
 model image_gen_chat_message {
@@ -67,16 +76,18 @@ model image_gen_chat_message {
   created_at DateTime       @default(now())
   updated_at DateTime       @updatedAt
   chat       image_gen_chat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+  status     ChatStatus?
   images     ai_image[]
 }
 
 model ai_image {
-  id         String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  message_id String?                 @db.Uuid
-  user_id    String                  @db.Uuid
-  asset_url  String
-  created_at DateTime                @default(now())
-  updated_at DateTime                @updatedAt
-  message    image_gen_chat_message? @relation(fields: [message_id], references: [id], onDelete: SetNull)
-  user       user                    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id           String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  message_id   String?                 @db.Uuid
+  user_id      String                  @db.Uuid
+  asset_url    String
+  aspect_ratio String
+  created_at   DateTime                @default(now())
+  updated_at   DateTime                @updatedAt
+  message      image_gen_chat_message? @relation(fields: [message_id], references: [id], onDelete: SetNull)
+  user         user                    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
