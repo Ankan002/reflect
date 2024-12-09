@@ -33,6 +33,7 @@ export const useChatScreen = (args: Args) => {
 	const [prompt, setPrompt] = useState<string>("");
 	const [messages, setMessages] = useState<ImageGenChatMessage[]>([]);
 	const [loadingMessages, setLoadingMessages] = useState(false);
+	const [creatingImages, setCreatingImages] = useState(false);
 
 	const { protectedAPIErrorHandler } = useAPIErrorHandler();
 	const fetchChatErrorHandler = protectedAPIErrorHandler();
@@ -110,7 +111,9 @@ export const useChatScreen = (args: Args) => {
 	};
 
 	const onGeneratePrompt = async () => {
-		// TODO: Handle states here
+		if (creatingImages) return;
+
+		setCreatingImages(true);
 
 		try {
 			const response = await createGenerateImageRequestAction({
@@ -118,7 +121,7 @@ export const useChatScreen = (args: Args) => {
 				prompt,
 			});
 
-			console.log(response);
+			setCreatingImages(false);
 
 			if (response.code === 401) {
 				throw new Error("401");
@@ -138,6 +141,7 @@ export const useChatScreen = (args: Args) => {
 				...prev,
 			]);
 		} catch (error) {
+			setCreatingImages(false);
 			sendPromptErrorHandler(error);
 		}
 	};
@@ -156,5 +160,6 @@ export const useChatScreen = (args: Args) => {
 		onGeneratePrompt,
 		messages,
 		loadingMessages,
+		creatingImages,
 	};
 };
