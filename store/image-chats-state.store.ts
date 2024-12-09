@@ -12,7 +12,7 @@ export const useImageChatsStateStore = create<ImageChatsStore>()((set) => ({
 	chats: [],
 	setChats: (newChats) => set({ chats: newChats }),
 	addChat: (newChat) =>
-		set((state) => ({ chats: [...state.chats, newChat] })),
+		set((state) => ({ chats: [newChat, ...state.chats] })),
 	removeChat: (chatId) =>
 		set((state) => ({
 			chats: state.chats.filter((chat) => chat.id !== chatId),

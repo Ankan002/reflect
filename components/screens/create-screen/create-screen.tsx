@@ -32,6 +32,10 @@ const CreateScreen = () => {
 		AspectRatioOptions,
 		aspectRatio,
 		onAspectRatioChange,
+		chatName,
+		isCreatingChat,
+		onChatNameChange,
+		onCreateChatClick,
 	} = useCreateScreen();
 
 	return (
@@ -47,6 +51,8 @@ const CreateScreen = () => {
 						<Input
 							className="w-full mt-2 border-foreground"
 							placeholder="Domino Potato"
+							value={chatName}
+							onChange={onChatNameChange}
 						/>
 					</div>
 
@@ -146,7 +152,12 @@ const CreateScreen = () => {
 					</Accordion>
 
 					<div className="w-full mt-3 flex justify-end">
-						<Button>Create</Button>
+						<Button
+							onClick={onCreateChatClick}
+							disabled={isCreatingChat}
+						>
+							Create
+						</Button>
 					</div>
 				</div>
 			</main>

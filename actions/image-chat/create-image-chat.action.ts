@@ -28,7 +28,7 @@ const ArgsSchema = z.object({
 		required_error: "Please provide an output format",
 		invalid_type_error: "Output format should either be png or webp",
 	}),
-	aspect_ration: z.union(
+	aspect_ratio: z.union(
 		[
 			z.literal("1:1"),
 			z.literal("16:9"),
@@ -84,7 +84,7 @@ export const createImageChatAction = actionHandler<Response, Args>(
 				chat_id: chat.id,
 				number_of_output: argsData.number_of_output,
 				output_format: argsData.output_format,
-				aspect_ratio: argsData.aspect_ration,
+				aspect_ratio: argsData.aspect_ratio,
 			},
 		});
 
