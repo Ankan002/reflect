@@ -1,5 +1,7 @@
+import { createGenerateImageRequestAction } from "@/actions/generate-image";
 import { getImageChatAction } from "@/actions/image-chat";
 import { useAPIErrorHandler } from "@/hooks";
+import { onTextareaInputChange } from "@/utils/client";
 import { chat_config, image_gen_chat } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -15,9 +17,11 @@ export const useChatScreen = (args: Args) => {
 	const [chat, setChat] = useState<image_gen_chat | null>(null);
 	const [isLoadingChat, setIsLoadingChat] = useState(false);
 	const [chatConfig, setChatConfig] = useState<chat_config | null>(null);
+	const [prompt, setPrompt] = useState<string>("");
 
 	const { protectedAPIErrorHandler } = useAPIErrorHandler();
 	const fetchChatErrorHandler = protectedAPIErrorHandler();
+	const sendPromptErrorHandler = protectedAPIErrorHandler();
 
 	const fetchChat = async () => {
 		if (isLoadingChat) return;
@@ -56,6 +60,21 @@ export const useChatScreen = (args: Args) => {
 		}
 	};
 
+	const onGeneratePrompt = async () => {
+		// TODO: Handle states here
+
+		try {
+			const response = await createGenerateImageRequestAction({
+				chatId: args.id,
+				prompt,
+			});
+
+			console.log(response);
+		} catch (error) {
+			sendPromptErrorHandler(error);
+		}
+	};
+
 	useEffect(() => {
 		fetchChat();
 	}, [args.id]);
@@ -64,5 +83,8 @@ export const useChatScreen = (args: Args) => {
 		chat,
 		chatConfig,
 		isLoadingChat,
+		prompt,
+		onPromptChange: onTextareaInputChange(setPrompt),
+		onGeneratePrompt,
 	};
 };

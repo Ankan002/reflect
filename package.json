@@ -13,6 +13,7 @@
 		"db:format": "bunx prisma format"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.705.0",
 		"@prisma/client": "5.22.0",
 		"@radix-ui/react-accordion": "^1.2.1",
 		"@radix-ui/react-avatar": "^1.1.1",
@@ -43,6 +44,7 @@
 		"zustand": "^5.0.1"
 	},
 	"devDependencies": {
+		"@types/bun": "^1.1.14",
 		"@types/jsonwebtoken": "^9.0.7",
 		"@types/node": "^20",
 		"@types/react": "^18",

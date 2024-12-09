@@ -13,7 +13,8 @@ interface Props {
 const ChatScreen = (props: Props) => {
 	const { id } = props;
 
-	const { chat, isLoadingChat } = useChatScreen({ id });
+	const { chat, isLoadingChat, onGeneratePrompt, onPromptChange, prompt } =
+		useChatScreen({ id });
 
 	return (
 		<DashboardProvider
@@ -28,9 +29,15 @@ const ChatScreen = (props: Props) => {
 						<Textarea
 							className="resize-none h-20 border-foreground"
 							placeholder="Your imagination 🤯"
+							value={prompt}
+							onChange={onPromptChange}
 						/>
 
-						<Button className="ml-2" size="icon">
+						<Button
+							className="ml-2"
+							size="icon"
+							onClick={onGeneratePrompt}
+						>
 							<Send />
 						</Button>
 					</div>
