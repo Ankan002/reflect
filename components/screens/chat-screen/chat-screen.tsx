@@ -1,6 +1,7 @@
 "use client";
 
 import { DashboardProvider } from "@/components/providers";
+import { useChatScreen } from "./hook";
 
 interface Props {
 	id: string;
@@ -8,10 +9,14 @@ interface Props {
 
 const ChatScreen = (props: Props) => {
 	const { id } = props;
-	// const {} =
+
+	const { chat, isLoadingChat } = useChatScreen({ id });
 
 	return (
-		<DashboardProvider heading={id}>
+		<DashboardProvider
+			heading={chat?.name ?? id}
+			isHeadingLoading={isLoadingChat}
+		>
 			<></>
 		</DashboardProvider>
 	);

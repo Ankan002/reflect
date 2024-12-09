@@ -23,10 +23,11 @@ import { LogOut, User } from "lucide-react";
 interface Props {
 	children: React.ReactNode;
 	heading: string;
+	isHeadingLoading?: boolean;
 }
 
 const DashboardProvider = (props: Props) => {
-	const { children, heading } = props;
+	const { children, heading, isHeadingLoading } = props;
 
 	const { isAppLoaded, isUserLoading, user, theme, onLogout } =
 		useDashboardProvider();
@@ -39,9 +40,13 @@ const DashboardProvider = (props: Props) => {
 					<div className="w-full flex justify-between items-center my-2 px-2">
 						<div className="flex items-center">
 							<SidebarTrigger className="text-primary" />
-							<p className="text-primary text-lg ml-1">
-								{heading}
-							</p>
+							{isHeadingLoading ? (
+								<Skeleton className="h-5 w-24 bg-primary" />
+							) : (
+								<p className="text-primary text-lg ml-1">
+									{heading}
+								</p>
+							)}
 						</div>
 						<div>
 							{isUserLoading || !isAppLoaded || !user ? (
