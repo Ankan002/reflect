@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build",
-		"start": "next start",
+		"start": "bun db:push && next start",
 		"lint": "next lint",
 		"db:push-dev": "bunx prisma db push",
 		"db:push": "bunx prisma db push --accept-data-loss",
