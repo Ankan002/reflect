@@ -1,10 +1,13 @@
 import { ThemeToggler } from "@/components/common";
 import { MagicLinkScreen } from "@/components/screens";
+import { Suspense } from "react";
 
 const MagicLinkPage = () => {
 	return (
 		<>
-			<MagicLinkScreen />
+			<Suspense>
+				<MagicLinkScreen />
+			</Suspense>
 			<ThemeToggler />
 		</>
 	);
