@@ -7,15 +7,27 @@ import {
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-interface Props {
+type Props = {
 	children: React.ReactNode;
 	heading: string;
 	isHeadingLoading?: boolean;
-}
+} & (
+	| {
+			button?: false;
+	  }
+	| {
+			button: true;
+			onClick: () => void;
+			ActionButtonIcon: LucideIcon;
+			buttonTitle?: string;
+	  }
+);
 
 const DashboardProvider = (props: Props) => {
-	const { children, heading, isHeadingLoading } = props;
+	const { children, heading, isHeadingLoading, button } = props;
 
 	return (
 		<SidebarProvider>
@@ -33,6 +45,17 @@ const DashboardProvider = (props: Props) => {
 								</p>
 							)}
 						</div>
+
+						{button && (
+							<Button
+								size={"icon"}
+								onClick={props.onClick}
+								variant={"ghost"}
+								className="cursor-pointer"
+							>
+								<props.ActionButtonIcon size={35} />
+							</Button>
+						)}
 					</div>
 					{children}
 				</div>

@@ -4,7 +4,7 @@ import { DashboardProvider } from "@/components/providers";
 import { useChatScreen } from "./hook";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, Settings } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,6 +32,9 @@ const ChatScreen = (props: Props) => {
 		<DashboardProvider
 			heading={chat?.name ?? id}
 			isHeadingLoading={isLoadingChat}
+			button
+			ActionButtonIcon={Settings}
+			onClick={() => {}}
 		>
 			<div className="w-full flex-1 flex flex-col items-center px-5 pb-5 font-body text-primary">
 				<div className="w-full max-w-[1000px] max-h-[90vh] flex-1 flex flex-col">
