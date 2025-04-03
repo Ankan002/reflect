@@ -10,16 +10,34 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SidebarNavItems } from "@/constants/sidebar-nav-items";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCommonSidebar } from "./hook";
+import {
+	DropdownMenu,
+	DropdownMenuTrigger,
+	DropdownMenuContent,
+	DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Avatar } from "@/components/ui/avatar";
+import BoringAvatar from "boring-avatars";
+import { LogOut } from "lucide-react";
 
 const CommonSidebar = () => {
 	const pathname = usePathname();
-	const { chats, isChatLoading } = useCommonSidebar();
+	const {
+		chats,
+		isChatLoading,
+		isUserLoading,
+		user,
+		onLogout,
+		isAppLoaded,
+		theme,
+	} = useCommonSidebar();
 
 	return (
 		<Sidebar className="border-r-1 font-body">
@@ -80,6 +98,49 @@ const CommonSidebar = () => {
 					)}
 				</SidebarGroup>
 			</SidebarContent>
+
+			<SidebarFooter>
+				<div className="w-full p-2 flex">
+					{isUserLoading || !isAppLoaded || !user ? (
+						<div className="w-full flex items-center">
+							<Skeleton className="rounded-full mr-1 h-10 w-10" />
+							<div className="flex-1 flex flex-col">
+								<Skeleton className="w-full h-4" />
+								<Skeleton className="w-full h-4 mt-1" />
+							</div>
+						</div>
+					) : (
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<div className="w-full flex items-center cursor-pointer">
+									<Avatar className="mr-2">
+										<BoringAvatar
+											name={user.email.split("@")[0]}
+											variant="marble"
+										/>
+									</Avatar>
+									<div className="flex-1 flex flex-col">
+										<p>{user.name}</p>
+									</div>
+								</div>
+							</DropdownMenuTrigger>
+
+							<DropdownMenuContent
+								className={`${theme} bg-background mr-1 font-geist-sans w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg mb-2`}
+								align="end"
+							>
+								<DropdownMenuItem
+									className="cursor-pointer text-destructive hover:bg-destructive/20 hover:text-destructive-foreground"
+									onClick={onLogout}
+								>
+									<LogOut />
+									Logout
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					)}
+				</div>
+			</SidebarFooter>
 		</Sidebar>
 	);
 };
