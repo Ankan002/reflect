@@ -38,7 +38,7 @@ const SettingsScreen = () => {
 								Replicate API Key
 							</Label>
 							<Input
-								className="mt-2 border-foreground"
+								className="mt-2 border-foreground text-foreground"
 								placeholder="xxxxxx-xxxxxx-xxxxxx-xxxxxxx"
 								value={replicateApiKeyValue}
 								onChange={onReplicateApiKeyValueChange}

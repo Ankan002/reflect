@@ -10,8 +10,7 @@ import {
 import { image_gen_chat_message } from "@prisma/client";
 import { z } from "zod";
 import replicate from "replicate";
-import { BASE_DOMAIN, S3_BUCKET_NAME, S3_ENDPOINT } from "@/constants/env";
-import { buffer } from "node:stream/consumers";
+import { S3_BUCKET_NAME, S3_ENDPOINT } from "@/constants/env";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "node:crypto";
 
@@ -95,7 +94,7 @@ export const createGenerateImageRequestAction = actionHandler<
 				mode: "block",
 				timeout: 60,
 			},
-		}
+		},
 	);
 
 	const s3Client = getS3Client();
@@ -105,7 +104,7 @@ export const createGenerateImageRequestAction = actionHandler<
 		for (const replicateResponse of replicateResponses) {
 			if (replicateResponse instanceof ReadableStream) {
 				const fileBuffer = await new Response(
-					replicateResponse
+					replicateResponse,
 				).arrayBuffer();
 
 				const fileKey = `${randomUUID()}.${
