@@ -2,7 +2,6 @@
 
 import { DashboardProvider } from "@/components/providers";
 import { useGalleryScreen } from "./hook";
-import { Masonry } from "masonic";
 import Image from "next/image";
 
 const GalleryScreen = () => {
