@@ -40,7 +40,7 @@ const CreateScreen = () => {
 
 	return (
 		<DashboardProvider heading="New Chat">
-			<main className="w-full flex-1 flex flex-col px-5 items-center justify-center mt-5 font-geist-sans text-foreground">
+			<main className="w-full flex-1 flex flex-col px-5 items-center justify-center mt-5 font-body text-foreground">
 				<div className="w-full max-w-[800px] flex flex-col">
 					<p className="flex items-center justify-center text-center text-3xl font-medium text-primary">
 						{"Let's"} generate something awesome
@@ -86,7 +86,7 @@ const CreateScreen = () => {
 													>
 														{option.label}
 													</SelectItem>
-												)
+												),
 											)}
 										</SelectContent>
 									</Select>
@@ -113,7 +113,7 @@ const CreateScreen = () => {
 													>
 														{option.label}
 													</SelectItem>
-												)
+												),
 											)}
 										</SelectContent>
 									</Select>
@@ -142,7 +142,7 @@ const CreateScreen = () => {
 													>
 														{option.label}
 													</SelectItem>
-												)
+												),
 											)}
 										</SelectContent>
 									</Select>

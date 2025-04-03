@@ -36,7 +36,7 @@ const DashboardProvider = (props: Props) => {
 		<SidebarProvider>
 			<CommonSidebar />
 			<SidebarInset>
-				<div className="w-full min-h-screen flex flex-col">
+				<div className="w-full min-h-screen flex flex-col font-body">
 					<div className="w-full flex justify-between items-center my-2 px-2">
 						<div className="flex items-center">
 							<SidebarTrigger className="text-primary" />
@@ -62,7 +62,7 @@ const DashboardProvider = (props: Props) => {
 										</Avatar>
 									</DropdownMenuTrigger>
 									<DropdownMenuContent
-										className={`${theme} bg-background mr-1 border-foreground font-geist-sans`}
+										className={`${theme} bg-background mr-1 border-foreground font-body`}
 									>
 										<DropdownMenuLabel className="font-medium">
 											Profile

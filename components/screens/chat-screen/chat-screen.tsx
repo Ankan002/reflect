@@ -33,7 +33,7 @@ const ChatScreen = (props: Props) => {
 			heading={chat?.name ?? id}
 			isHeadingLoading={isLoadingChat}
 		>
-			<div className="w-full flex-1 flex flex-col items-center px-5 pb-5 font-geist-sans text-primary">
+			<div className="w-full flex-1 flex flex-col items-center px-5 pb-5 font-body text-primary">
 				<div className="w-full max-w-[1000px] max-h-[90vh] flex-1 flex flex-col">
 					<div className="flex-1 flex w-full flex-col-reverse overflow-y-auto">
 						{creatingImages && (
@@ -46,7 +46,7 @@ const ChatScreen = (props: Props) => {
 
 								<div className="w-full max-w-[450px] flex flex-wrap mt-3">
 									{new Array(
-										chatConfig?.number_of_output ?? 4
+										chatConfig?.number_of_output ?? 4,
 									)
 										.fill(0)
 										.map((_, index) => (
@@ -58,13 +58,13 @@ const ChatScreen = (props: Props) => {
 														(200 /
 															Number(
 																chatConfig!.aspect_ratio.split(
-																	":"
-																)[0]
+																	":",
+																)[0],
 															)) *
 														Number(
 															chatConfig!.aspect_ratio.split(
-																":"
-															)[1]
+																":",
+															)[1],
 														),
 
 													width: 200,
@@ -93,7 +93,7 @@ const ChatScreen = (props: Props) => {
 											"w-full flex my-2",
 											message.role === "user"
 												? "justify-end"
-												: "justify-start"
+												: "justify-start",
 										)}
 									>
 										{message.role === "user" && (
@@ -116,13 +116,13 @@ const ChatScreen = (props: Props) => {
 																(200 /
 																	Number(
 																		image.aspect_ratio.split(
-																			":"
-																		)[0]
+																			":",
+																		)[0],
 																	)) *
 																Number(
 																	image.aspect_ratio.split(
-																		":"
-																	)[1]
+																		":",
+																	)[1],
 																)
 															}
 															width={200}
@@ -132,7 +132,7 @@ const ChatScreen = (props: Props) => {
 																	image.aspect_ratio,
 															}}
 														/>
-													)
+													),
 												)}
 											</div>
 										)}

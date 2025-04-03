@@ -81,7 +81,7 @@ export const createGenerateImageRequestAction = actionHandler<
 	});
 
 	const replicateResponses = await replicateInstance.run(
-		"black-forest-labs/flux-schnell",
+		"black-forest-labs/flux-dev",
 		{
 			input: {
 				prompt: argsData.prompt,

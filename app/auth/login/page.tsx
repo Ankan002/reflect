@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const LoginPage = () => {
 	return (
-		<main className="w-full min-h-screen bg-background flex font-geist-sans">
+		<main className="w-full min-h-screen bg-background flex font-body">
 			<LoginSection />
 
 			<div className="md:w-1/2 h-screen hidden md:flex flex-col">

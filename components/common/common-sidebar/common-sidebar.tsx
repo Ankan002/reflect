@@ -22,7 +22,7 @@ const CommonSidebar = () => {
 	const { chats, isChatLoading } = useCommonSidebar();
 
 	return (
-		<Sidebar className="border-r-1">
+		<Sidebar className="border-r-1 font-body">
 			<SidebarHeader>
 				<Logo type="long" />
 				<SidebarMenu className="mr-1">
@@ -47,7 +47,7 @@ const CommonSidebar = () => {
 			</SidebarHeader>
 
 			<SidebarContent>
-				<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+				<SidebarGroup className="group-data-[collapsible=icon]:hidden font-body">
 					<SidebarGroupLabel className="text-sm">
 						Your Chats
 					</SidebarGroupLabel>
@@ -57,7 +57,7 @@ const CommonSidebar = () => {
 							{new Array(10).fill(null).map((_, index) => (
 								<Skeleton
 									key={index}
-									className="w-full h-6 bg-primary mt-1.5"
+									className="w-full h-6 mt-1.5"
 								/>
 							))}
 						</>

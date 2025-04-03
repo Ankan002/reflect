@@ -27,7 +27,7 @@ const SettingsScreen = () => {
 
 	return (
 		<DashboardProvider heading="Settings">
-			<div className="w-full flex flex-col items-center font-geist-sans mt-5 text-primary px-5">
+			<div className="w-full flex flex-col items-center font-body mt-5 text-primary px-5">
 				<div className="w-full max-w-[1000px] flex flex-col">
 					{isFetchingReplicateKey ? (
 						<Skeleton className="w-full flex h-10 bg-accent" />
@@ -48,14 +48,16 @@ const SettingsScreen = () => {
 						</div>
 					)}
 
-					<div className="w-full flex items-center justify-between mt-5">
-						<p className="text-lg">Theme</p>
+					<div className="w-full flex items-center justify-between mt-5 font-body">
+						<p className="text-lg font-body">Theme</p>
 
 						<Select value={theme} onValueChange={onThemeChange}>
 							<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 								<SelectValue placeholder="Theme" />
 							</SelectTrigger>
-							<SelectContent className={`${theme} bg-background`}>
+							<SelectContent
+								className={`${theme} bg-background font-body`}
+							>
 								<SelectItem value="light">Light</SelectItem>
 								<SelectItem value="dark">Dark</SelectItem>
 							</SelectContent>
