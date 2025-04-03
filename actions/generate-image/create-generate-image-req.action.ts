@@ -28,6 +28,7 @@ const ArgsSchema = z.object({
 			invalid_type_error: "ChatId must be a string",
 		})
 		.uuid("Invalid chatId"),
+	avoid_context: z.boolean().optional(),
 });
 
 type Args = z.infer<typeof ArgsSchema>;
@@ -62,6 +63,21 @@ export const createGenerateImageRequestAction = actionHandler<
 		throw new APIError("API Key not found", 404);
 	}
 
+	const oldChatContext = argsData.avoid_context
+		? ""
+		: (
+				(await prisma.image_gen_chat_message.findMany({
+					where: {
+						chat_id: argsData.chatId,
+						NOT: {
+							prompt: undefined,
+						},
+					},
+				})) ?? []
+			)
+				.map((chat) => chat.prompt)
+				.join(" ");
+
 	const chat = await prisma.image_gen_chat.findUnique({
 		where: {
 			id: argsData.chatId,
@@ -80,11 +96,13 @@ export const createGenerateImageRequestAction = actionHandler<
 		auth: apiKey.key,
 	});
 
+	console.log();
+
 	const replicateResponses = await replicateInstance.run(
 		"black-forest-labs/flux-dev",
 		{
 			input: {
-				prompt: argsData.prompt,
+				prompt: `${oldChatContext} ${argsData.prompt}`,
 				disable_safety_checker: true,
 				output_format: chat.chat_config.output_format,
 				aspect_ratio: chat.chat_config.aspect_ratio,

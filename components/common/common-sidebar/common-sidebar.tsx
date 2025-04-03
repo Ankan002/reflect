@@ -65,7 +65,7 @@ const CommonSidebar = () => {
 						chats.map((chat) => (
 							<SidebarMenuItem
 								key={chat.id}
-								className="list-none"
+								className="list-none my-0.5"
 							>
 								<SidebarMenuButton
 									asChild
