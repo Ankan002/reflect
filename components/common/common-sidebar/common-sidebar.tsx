@@ -63,7 +63,10 @@ const CommonSidebar = () => {
 						</>
 					) : (
 						chats.map((chat) => (
-							<SidebarMenuItem key={chat.id}>
+							<SidebarMenuItem
+								key={chat.id}
+								className="list-none"
+							>
 								<SidebarMenuButton
 									asChild
 									isActive={`/chat/${chat.id}` === pathname}

@@ -72,7 +72,7 @@ const CreateScreen = () => {
 										value={outputFormat}
 										onValueChange={onOutputFormatChange}
 									>
-										<SelectTrigger className="w-[180px] outline-none focus:outline-none focus:ring-0 border border-foreground">
+										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 											<SelectValue placeholder="Format" />
 										</SelectTrigger>
 										<SelectContent
@@ -99,7 +99,7 @@ const CreateScreen = () => {
 										value={numberOfOutputs}
 										onValueChange={onNumberOfOutputsChange}
 									>
-										<SelectTrigger className="w-[180px] outline-none focus:outline-none focus:ring-0 border border-foreground">
+										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 											<SelectValue placeholder="Outputs" />
 										</SelectTrigger>
 										<SelectContent
@@ -128,7 +128,7 @@ const CreateScreen = () => {
 										value={aspectRatio}
 										onValueChange={onAspectRatioChange}
 									>
-										<SelectTrigger className="w-[180px] outline-none focus:outline-none focus:ring-0 border border-foreground">
+										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 											<SelectValue placeholder="Outputs" />
 										</SelectTrigger>
 										<SelectContent

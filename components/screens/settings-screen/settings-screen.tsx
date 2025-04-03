@@ -52,7 +52,7 @@ const SettingsScreen = () => {
 						<p className="text-lg">Theme</p>
 
 						<Select value={theme} onValueChange={onThemeChange}>
-							<SelectTrigger className="w-[180px] outline-none focus:outline-none focus:ring-0 border border-foreground">
+							<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 								<SelectValue placeholder="Theme" />
 							</SelectTrigger>
 							<SelectContent className={`${theme} bg-background`}>
