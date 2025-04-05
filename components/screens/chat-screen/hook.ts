@@ -4,7 +4,7 @@ import {
 } from "@/actions/generate-image";
 import { getImageChatAction } from "@/actions/image-chat";
 import { useAPIErrorHandler } from "@/hooks";
-import { onTextareaInputChange } from "@/utils/client";
+import { onTextareaInputChange, toggleBooleanState } from "@/utils/client";
 import {
 	ai_image,
 	chat_config,
@@ -33,6 +33,7 @@ export const useChatScreen = (args: Args) => {
 	const [messages, setMessages] = useState<ImageGenChatMessage[]>([]);
 	const [loadingMessages, setLoadingMessages] = useState(false);
 	const [creatingImages, setCreatingImages] = useState(false);
+	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
 	const { protectedAPIErrorHandler } = useAPIErrorHandler();
 	const fetchChatErrorHandler = protectedAPIErrorHandler();
@@ -162,5 +163,7 @@ export const useChatScreen = (args: Args) => {
 		messages,
 		loadingMessages,
 		creatingImages,
+		isSettingsModalOpen,
+		toggleSettingsModal: toggleBooleanState(setIsSettingsModalOpen),
 	};
 };

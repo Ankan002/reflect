@@ -8,6 +8,7 @@ import { Send, Settings } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChatSettingsModal } from "@/components/modals";
 
 interface Props {
 	id: string;
@@ -26,6 +27,8 @@ const ChatScreen = (props: Props) => {
 		messages,
 		chatConfig,
 		creatingImages,
+		isSettingsModalOpen,
+		toggleSettingsModal,
 	} = useChatScreen({ id });
 
 	return (
@@ -34,7 +37,7 @@ const ChatScreen = (props: Props) => {
 			isHeadingLoading={isLoadingChat}
 			button
 			ActionButtonIcon={Settings}
-			onClick={() => {}}
+			onClick={chat && chatConfig ? toggleSettingsModal : () => {}}
 		>
 			<div className="w-full flex-1 flex flex-col items-center px-5 pb-5 font-body text-primary">
 				<div className="w-full max-w-[1000px] max-h-[90vh] flex-1 flex flex-col">
@@ -117,7 +120,7 @@ const ChatScreen = (props: Props) => {
 						)}
 					</div>
 
-					<div className="w-full flex items-end">
+					<div className="w-full flex items-end mt-3">
 						<Textarea
 							className="resize-none h-20 border-foreground"
 							placeholder="Your imagination 🤯"
@@ -136,6 +139,16 @@ const ChatScreen = (props: Props) => {
 					</div>
 				</div>
 			</div>
+
+			{chat && chatConfig && isSettingsModalOpen && (
+				<ChatSettingsModal
+					onUpdate={() => {}}
+					chatConfig={chatConfig}
+					chatId={chat.id}
+					isOpen={isSettingsModalOpen}
+					onCloseClick={toggleSettingsModal}
+				/>
+			)}
 		</DashboardProvider>
 	);
 };

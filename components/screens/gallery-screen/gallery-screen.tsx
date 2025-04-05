@@ -14,17 +14,13 @@ const GalleryScreen = () => {
 					return (
 						<Image
 							key={image.id}
-							src={image.asset_url}
+							src={image.public_url}
 							alt={image.id}
-							height={
-								(200 /
-									Number(image.aspect_ratio.split(":")[0])) *
-								Number(image.aspect_ratio.split(":")[1])
-							}
-							width={200}
-							className="m-1 rounded-md border border-primary"
+							height={1024}
+							width={1024}
+							className="m-1 rounded-md border border-primary w-52 h-52"
 							style={{
-								aspectRatio: image.aspect_ratio,
+								aspectRatio: "1:1",
 							}}
 						/>
 					);

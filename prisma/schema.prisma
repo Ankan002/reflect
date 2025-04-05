@@ -71,6 +71,8 @@ model image_gen_chat {
 model chat_config {
   id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   image_style       ImageStyle     @default(vivid)
+  use_context       Boolean        @default(true)
+  context_image     String?
   number_of_outputs Int            @default(1)
   chat_id           String         @unique @db.Uuid
   created_at        DateTime       @default(now())
