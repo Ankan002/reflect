@@ -94,7 +94,8 @@ model ai_image {
   id         String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   message_id String?                 @db.Uuid
   user_id    String                  @db.Uuid
-  asset_url  String
+  public_url String
+  file_key   String
   created_at DateTime                @default(now())
   updated_at DateTime                @updatedAt
   message    image_gen_chat_message? @relation(fields: [message_id], references: [id], onDelete: SetNull)

@@ -23,15 +23,9 @@ import { useCreateScreen } from "./hook";
 const CreateScreen = () => {
 	const {
 		theme,
-		OutputFormatOptions,
-		outputFormat,
-		onOutputFormatChange,
-		NumberOfOutputOptions,
-		numberOfOutputs,
-		onNumberOfOutputsChange,
-		AspectRatioOptions,
-		aspectRatio,
-		onAspectRatioChange,
+		ImageStyleOptions,
+		imageStyle,
+		onImageStyleChange,
 		chatName,
 		isCreatingChat,
 		onChatNameChange,
@@ -66,11 +60,11 @@ const CreateScreen = () => {
 							</AccordionTrigger>
 							<AccordionContent>
 								<div className="w-full flex items-center justify-between">
-									<p className="text-lg">Output Format</p>
+									<p className="text-lg">Image Style</p>
 
 									<Select
-										value={outputFormat}
-										onValueChange={onOutputFormatChange}
+										value={imageStyle}
+										onValueChange={onImageStyleChange}
 									>
 										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
 											<SelectValue placeholder="Format" />
@@ -78,72 +72,14 @@ const CreateScreen = () => {
 										<SelectContent
 											className={`${theme} bg-background`}
 										>
-											{OutputFormatOptions.map(
-												(option) => (
-													<SelectItem
-														key={option.value}
-														value={option.value}
-													>
-														{option.label}
-													</SelectItem>
-												),
-											)}
-										</SelectContent>
-									</Select>
-								</div>
-
-								<div className="w-full flex items-center justify-between mt-4">
-									<p className="text-lg">Number of Outputs</p>
-
-									<Select
-										value={numberOfOutputs}
-										onValueChange={onNumberOfOutputsChange}
-									>
-										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
-											<SelectValue placeholder="Outputs" />
-										</SelectTrigger>
-										<SelectContent
-											className={`${theme} bg-background`}
-										>
-											{NumberOfOutputOptions.map(
-												(option) => (
-													<SelectItem
-														key={option.value}
-														value={option.value}
-													>
-														{option.label}
-													</SelectItem>
-												),
-											)}
-										</SelectContent>
-									</Select>
-								</div>
-
-								<div className="w-full flex items-center justify-between mt-4">
-									<p className="text-lg">
-										Output Aspect Ratio
-									</p>
-
-									<Select
-										value={aspectRatio}
-										onValueChange={onAspectRatioChange}
-									>
-										<SelectTrigger className="w-[180px] outline-hidden focus:outline-hidden focus:ring-0 border border-foreground">
-											<SelectValue placeholder="Outputs" />
-										</SelectTrigger>
-										<SelectContent
-											className={`${theme} bg-background`}
-										>
-											{AspectRatioOptions.map(
-												(option) => (
-													<SelectItem
-														key={option.value}
-														value={option.value}
-													>
-														{option.label}
-													</SelectItem>
-												),
-											)}
+											{ImageStyleOptions.map((option) => (
+												<SelectItem
+													key={option.value}
+													value={option.value}
+												>
+													{option.label}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 								</div>

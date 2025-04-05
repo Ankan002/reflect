@@ -120,6 +120,8 @@ export const useChatScreen = (args: Args) => {
 				prompt,
 			});
 
+			console.log(response);
+
 			setCreatingImages(false);
 
 			if (response.code === 401) {

@@ -47,31 +47,15 @@ const ChatScreen = (props: Props) => {
 									</div>
 								</div>
 
-								<div className="w-full max-w-[450px] flex flex-wrap mt-3">
+								<div className="w-full max-w-[500px] flex flex-wrap mt-3">
 									{new Array(
-										chatConfig?.number_of_output ?? 4,
+										chatConfig?.number_of_outputs ?? 1,
 									)
 										.fill(0)
 										.map((_, index) => (
 											<Skeleton
 												key={index}
-												className="m-1 rounded-md border border-primary"
-												style={{
-													height:
-														(200 /
-															Number(
-																chatConfig!.aspect_ratio.split(
-																	":",
-																)[0],
-															)) *
-														Number(
-															chatConfig!.aspect_ratio.split(
-																":",
-															)[1],
-														),
-
-													width: 200,
-												}}
+												className="m-1 rounded-md border border-primary w-64 h-64"
 											/>
 										))}
 								</div>
@@ -106,33 +90,21 @@ const ChatScreen = (props: Props) => {
 										)}
 
 										{message.role === "system" && (
-											<div className="w-full max-w-[450px] flex flex-wrap">
+											<div className="w-full max-w-[500px] flex flex-wrap">
 												{message.images!.map(
 													(image) => (
 														<Image
 															key={image.id}
 															src={
-																image.asset_url
+																image.public_url
 															}
 															alt={image.id}
-															height={
-																(200 /
-																	Number(
-																		image.aspect_ratio.split(
-																			":",
-																		)[0],
-																	)) *
-																Number(
-																	image.aspect_ratio.split(
-																		":",
-																	)[1],
-																)
-															}
-															width={200}
-															className="m-1 rounded-md border border-primary"
+															height={1024}
+															width={1024}
+															className="m-1 rounded-md border border-primary w-64 h-64"
 															style={{
 																aspectRatio:
-																	image.aspect_ratio,
+																	"1:1",
 															}}
 														/>
 													),

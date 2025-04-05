@@ -17,36 +17,10 @@ const ArgsSchema = z.object({
 		})
 		.trim()
 		.min(1, "Name should be at least 1 character long"),
-	number_of_output: z
-		.number({
-			required_error: "Please provide the number of output",
-			invalid_type_error: "Number of outputs must be a number",
-		})
-		.min(1, "Min output is 1")
-		.max(4, "Max output is 4"),
-	output_format: z.union([z.literal("webp"), z.literal("png")], {
-		required_error: "Please provide an output format",
-		invalid_type_error: "Output format should either be png or webp",
+	image_style: z.union([z.literal("vivid"), z.literal("natural")], {
+		required_error: "Please provide a style",
+		invalid_type_error: "Image style must be natural or vivid",
 	}),
-	aspect_ratio: z.union(
-		[
-			z.literal("1:1"),
-			z.literal("16:9"),
-			z.literal("21:9"),
-			z.literal("3:2"),
-			z.literal("2:3"),
-			z.literal("4:5"),
-			z.literal("5:4"),
-			z.literal("3:4"),
-			z.literal("4:3"),
-			z.literal("9:16"),
-			z.literal("9:21"),
-		],
-		{
-			required_error: "Please provide an aspect ratio",
-			invalid_type_error: "Please pick a valid option",
-		}
-	),
 });
 
 interface Response {
@@ -64,7 +38,7 @@ export const createImageChatAction = actionHandler<Response, Args>(
 		if (!argsValidationResult.success) {
 			throw new APIError(
 				argsValidationResult.error.issues[0].message,
-				400
+				400,
 			);
 		}
 
@@ -82,9 +56,7 @@ export const createImageChatAction = actionHandler<Response, Args>(
 		await prisma.chat_config.create({
 			data: {
 				chat_id: chat.id,
-				number_of_output: argsData.number_of_output,
-				output_format: argsData.output_format,
-				aspect_ratio: argsData.aspect_ratio,
+				image_style: argsData.image_style,
 			},
 		});
 
@@ -98,5 +70,5 @@ export const createImageChatAction = actionHandler<Response, Args>(
 				},
 			},
 		};
-	}
+	},
 );

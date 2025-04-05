@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
 				hostname: "minio-api.ankn.dev",
 				protocol: "https",
 			},
+			{
+				hostname:
+					"ankan002-primary-space.blr1.cdn.digitaloceanspaces.com",
+				protocol: "https",
+			},
 		],
 	},
 };

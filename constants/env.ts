@@ -15,3 +15,5 @@ export const S3_SECRET_KEY = process.env["S3_SECRET_KEY"] ?? "";
 export const S3_BUCKET_NAME = process.env["S3_BUCKET_NAME"] ?? "";
 export const S3_REGION = process.env["S3_REGION"] ?? "";
 export const S3_ENDPOINT = process.env["S3_ENDPOINT"] ?? "";
+export const S3_CDN_ENDPOINT = process.env["S3_CDN_ENDPOINT"] ?? "";
+export const OPEN_AI_KEY = process.env["OPEN_AI_KEY"] ?? "";

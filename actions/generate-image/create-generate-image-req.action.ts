@@ -3,16 +3,13 @@
 import { APIError } from "@/types/error";
 import {
 	actionHandler,
+	generateNewImage,
 	getPrismaClient,
-	getS3Client,
+	uploadToS3,
 	verifyAuthToken,
 } from "@/utils/server";
-import { image_gen_chat_message } from "@prisma/client";
+import { image_gen_chat_message, Prisma } from "@prisma/client";
 import { z } from "zod";
-import replicate from "replicate";
-import { S3_BUCKET_NAME, S3_ENDPOINT } from "@/constants/env";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { randomUUID } from "node:crypto";
 
 const ArgsSchema = z.object({
 	prompt: z
@@ -53,13 +50,23 @@ export const createGenerateImageRequestAction = actionHandler<
 
 	const prisma = getPrismaClient();
 
-	const apiKey = await prisma.api_key.findUnique({
+	const user = await prisma.user.findUnique({
 		where: {
-			user_id: id,
+			id: id,
 		},
+		include: {
+			api_key: true,
+		},
+		relationLoadStrategy: "join",
 	});
 
-	if (!apiKey) {
+	if (!user) {
+		throw new APIError("No user found!", 404);
+	}
+
+	const apiKey = user.api_key;
+
+	if (user.role !== "admin" && user.role !== "dev_friend" && !apiKey) {
 		throw new APIError("API Key not found", 404);
 	}
 
@@ -92,57 +99,70 @@ export const createGenerateImageRequestAction = actionHandler<
 		throw new APIError("Chat not found", 404);
 	}
 
-	const replicateInstance = new replicate({
-		auth: apiKey.key,
+	console.log(argsData.prompt);
+
+	const imagesGenerated = await generateNewImage({
+		style: chat.chat_config.image_style,
+		prompt: argsData.avoid_context
+			? argsData.prompt
+			: `${oldChatContext} ${argsData.prompt}`,
+		admin: user.role === "admin" || user.role === "dev_friend",
+		numberOfOutput: chat.chat_config.number_of_outputs,
+		apiKey: user.api_key?.key,
 	});
 
-	console.log();
+	console.log(imagesGenerated);
 
-	const replicateResponses = await replicateInstance.run(
-		"black-forest-labs/flux-dev",
-		{
-			input: {
-				prompt: `${oldChatContext} ${argsData.prompt}`,
-				disable_safety_checker: true,
-				output_format: chat.chat_config.output_format,
-				aspect_ratio: chat.chat_config.aspect_ratio,
-				num_outputs: chat.chat_config.number_of_output,
-			},
-			wait: {
-				mode: "block",
-				timeout: 60,
-			},
-		},
-	);
+	const s3ImagePromises = [];
 
-	const s3Client = getS3Client();
-	const fileUrls = [];
+	for (const image of imagesGenerated) {
+		const response = await fetch(image);
 
-	if (replicateResponses instanceof Array) {
-		for (const replicateResponse of replicateResponses) {
-			if (replicateResponse instanceof ReadableStream) {
-				const fileBuffer = await new Response(
-					replicateResponse,
-				).arrayBuffer();
-
-				const fileKey = `${randomUUID()}.${
-					chat.chat_config.output_format
-				}`;
-
-				const command = new PutObjectCommand({
-					Bucket: S3_BUCKET_NAME,
-					Key: fileKey,
-					Body: Buffer.from(fileBuffer),
-					ACL: "public-read",
-				});
-
-				await s3Client.send(command);
-
-				const url = `${S3_ENDPOINT}/${S3_BUCKET_NAME}/${fileKey}`;
-				fileUrls.push(url);
-			}
+		if (!response.ok || !response.body) {
+			throw new APIError("Something went wrong!", 400);
 		}
+
+		const contentType =
+			response.headers.get("content-type") || "application/octet-stream";
+
+		s3ImagePromises.push(
+			uploadToS3({
+				content: response.body,
+				contentType,
+			}),
+		);
 	}
+
+	const fileResponses = await Promise.allSettled(s3ImagePromises);
+
+	// const s3Client = getS3Client();
+	// const fileUrls = [];
+
+	// if (replicateResponses instanceof Array) {
+	// 	for (const replicateResponse of replicateResponses) {
+	// 		if (replicateResponse instanceof ReadableStream) {
+	// 			const fileBuffer = await new Response(
+	// 				replicateResponse,
+	// 			).arrayBuffer();
+
+	// 			const fileKey = `${randomUUID()}.${
+	// 				chat.chat_config.output_format
+	// 			}`;
+
+	// 			const command = new PutObjectCommand({
+	// 				Bucket: S3_BUCKET_NAME,
+	// 				Key: fileKey,
+	// 				Body: Buffer.from(fileBuffer),
+	// 				ACL: "public-read",
+	// 			});
+
+	// 			await s3Client.send(command);
+
+	// 			const url = `${S3_ENDPOINT}/${S3_BUCKET_NAME}/${fileKey}`;
+	// 			fileUrls.push(url);
+	// 		}
+	// 	}
+	// }
 
 	const userMessage = await prisma.image_gen_chat_message.create({
 		data: {
@@ -161,14 +181,33 @@ export const createGenerateImageRequestAction = actionHandler<
 		},
 	});
 
+	const multipleImagesData: Prisma.ai_imageCreateManyInput[] = [];
+
+	for (const fileResponse of fileResponses) {
+		console.log(fileResponse);
+
+		if (fileResponse.status === "fulfilled") {
+			multipleImagesData.push({
+				user_id: id,
+				public_url: fileResponse.value.url,
+				file_key: fileResponse.value.key,
+				message_id: aiMessage.id,
+			});
+		}
+	}
+
 	await prisma.ai_image.createMany({
-		data: fileUrls.map((url) => ({
-			message_id: aiMessage.id,
-			aspect_ratio: chat.chat_config!.aspect_ratio,
-			asset_url: url,
-			user_id: id,
-		})),
+		data: multipleImagesData,
 	});
+
+	// await prisma.ai_image.createMany({
+	// 	data: fileUrls.map((url) => ({
+	// 		message_id: aiMessage.id,
+	// 		aspect_ratio: chat.chat_config!.aspect_ratio,
+	// 		asset_url: url,
+	// 		user_id: id,
+	// 	})),
+	// });
 
 	const updatedAIMessage = await prisma.image_gen_chat_message.findUnique({
 		where: {
