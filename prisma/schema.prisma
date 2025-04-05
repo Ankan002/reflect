@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["omitApi", "relationJoins"]
+  previewFeatures = ["relationJoins", "nativeDistinct"]
 }
 
 datasource db {
@@ -11,6 +11,12 @@ datasource db {
 enum ChatRole {
   user
   system
+}
+
+enum UserRole {
+  user
+  admin
+  dev_friend
 }
 
 enum UserStatus {
@@ -24,12 +30,17 @@ enum ChatStatus {
   cancelled
 }
 
+enum ImageStyle {
+  vivid
+  natural
+}
+
 model user {
   id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name            String
   email           String           @unique
   status          UserStatus       @default(active)
-  isAdmin         Boolean          @default(false)
+  role            UserRole         @default(user)
   created_at      DateTime         @default(now())
   updated_at      DateTime         @updatedAt
   api_key         api_key?
@@ -58,14 +69,13 @@ model image_gen_chat {
 }
 
 model chat_config {
-  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  number_of_output Int
-  aspect_ratio     String
-  output_format    String
-  chat_id          String         @unique @db.Uuid
-  created_at       DateTime       @default(now())
-  updated_at       DateTime       @updatedAt
-  chat             image_gen_chat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+  id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  image_style       ImageStyle     @default(vivid)
+  number_of_outputs Int            @default(1)
+  chat_id           String         @unique @db.Uuid
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
+  chat              image_gen_chat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
 }
 
 model image_gen_chat_message {
@@ -81,13 +91,12 @@ model image_gen_chat_message {
 }
 
 model ai_image {
-  id           String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  message_id   String?                 @db.Uuid
-  user_id      String                  @db.Uuid
-  asset_url    String
-  aspect_ratio String
-  created_at   DateTime                @default(now())
-  updated_at   DateTime                @updatedAt
-  message      image_gen_chat_message? @relation(fields: [message_id], references: [id], onDelete: SetNull)
-  user         user                    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id         String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  message_id String?                 @db.Uuid
+  user_id    String                  @db.Uuid
+  asset_url  String
+  created_at DateTime                @default(now())
+  updated_at DateTime                @updatedAt
+  message    image_gen_chat_message? @relation(fields: [message_id], references: [id], onDelete: SetNull)
+  user       user                    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
