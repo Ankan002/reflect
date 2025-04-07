@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useAuthStateStore } from "@/store";
+import { toast } from "sonner";
 
 type ErrorHandlerFunc = (error: Error) => void;
 
@@ -15,7 +16,7 @@ export const useAPIErrorHandler = () => {
 		(customHandler?: ErrorHandlerFunc) => (error: unknown) => {
 			if (error instanceof Error) {
 				if (error.message === "401") {
-					// showToastNotification(true, "You are not authenticated!!");
+					toast.error("Unauthorized access");
 					setIsAuthenticated(false);
 					router.replace("/login");
 					return;
@@ -26,21 +27,18 @@ export const useAPIErrorHandler = () => {
 					return;
 				}
 
-				// showToastNotification(true, error.message);
+				toast.error(error.message);
 				return;
 			}
 
-			// showToastNotification(true, "Some Error Occurred!!");
+			toast.error("Some Error Occurred!!");
 		};
 
 	const unprotectedAPIErrorHandler =
 		(customHandler?: ErrorHandlerFunc) => (error: unknown) => {
 			if (error instanceof Error) {
 				if (error.message === "401") {
-					// showToastNotification(
-					// 	true,
-					// 	"You are already authenticated!!",
-					// );
+					toast.error("You are already authenticated!!");
 					setIsAuthenticated(true);
 					router.replace("/");
 					return;
@@ -51,11 +49,11 @@ export const useAPIErrorHandler = () => {
 					return;
 				}
 
-				// showToastNotification(true, error.message);
+				toast.error(error.message);
 				return;
 			}
 
-			// showToastNotification(true, "Some Error Occurred!!");
+			toast.error("Some Error Occurred!!");
 		};
 
 	const APIErrorHandler =
@@ -68,11 +66,11 @@ export const useAPIErrorHandler = () => {
 					return;
 				}
 
-				// showToastNotification(true, error.message);
+				toast.error(error.message);
 				return;
 			}
 
-			// showToastNotification(true, "Some Error Occurred!!");
+			toast.error("Some Error Occurred!!");
 		};
 
 	return {

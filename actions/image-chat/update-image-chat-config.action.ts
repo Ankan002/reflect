@@ -1,3 +1,5 @@
+"use server";
+
 import { actionHandler, getPrismaClient } from "@/utils/server";
 import { chat_config } from "@prisma/client";
 import { APIError } from "@/types/error";

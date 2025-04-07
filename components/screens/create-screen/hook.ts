@@ -4,6 +4,7 @@ import { useImageChatsStateStore, useThemeStore } from "@/store";
 import { onTextInputChange } from "@/utils/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const ImageStyleOptions = [
 	{
@@ -32,7 +33,10 @@ export const useCreateScreen = () => {
 	const createChatErrorHandler = protectedAPIErrorHandler();
 
 	const onCreateChatClick = async () => {
-		if (isCreatingChat) return;
+		if (isCreatingChat) {
+			toast.error("Creating the chat!");
+			return;
+		}
 
 		setIsCreatingChat(true);
 
@@ -56,7 +60,7 @@ export const useCreateScreen = () => {
 				throw new Error("Something went wrong");
 			}
 
-			console.log(response);
+			toast.success("Chat created!");
 
 			addChat(response.data.chat);
 			router.replace(`/chat/${response.data.chat.id}`);

@@ -1,10 +1,10 @@
 import { verifyMagicLink } from "@/actions/auth";
 import { useAPIErrorHandler } from "@/hooks";
-import { useToast } from "@/hooks/use-toast";
 import { useAuthStateStore } from "@/store";
 import { onTextInputChange } from "@/utils/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 export const useMagicLinkScreen = () => {
 	const pathParams = useSearchParams();
@@ -21,16 +21,11 @@ export const useMagicLinkScreen = () => {
 
 	const { APIErrorHandler } = useAPIErrorHandler();
 
-	const { toast } = useToast();
-
 	const verifyMagicLinkErrorHandler = APIErrorHandler();
 
 	const onVerifyMagicLink = async () => {
 		if (isCreatingAccount) {
-			toast({
-				title: "Creating account, hold on!",
-				variant: "destructive",
-			});
+			toast.error("Creating account, hold on!");
 			return;
 		}
 
@@ -58,9 +53,7 @@ export const useMagicLinkScreen = () => {
 
 			setIsAuthenticated(true);
 			router.replace("/");
-			toast({
-				title: "Logged in successfully!",
-			});
+			toast.success("Logged in successfully!");
 		} catch (error) {
 			setIsCreatingAccount(false);
 			verifyMagicLinkErrorHandler(error);
@@ -79,7 +72,7 @@ export const useMagicLinkScreen = () => {
 			pathParams.get("new-account") === "false"
 		) {
 			setIsNewAccount(
-				pathParams.get("new-account") === "true" ? true : false
+				pathParams.get("new-account") === "true" ? true : false,
 			);
 		}
 	}, [pathParams]);

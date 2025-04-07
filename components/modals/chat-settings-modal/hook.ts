@@ -38,7 +38,6 @@ export const useChatSettingsModal = (args: Args) => {
 	};
 
 	useEffect(() => {
-		console.log(args.chatConfig.use_context);
 		setPickContext(args.chatConfig.use_context);
 	}, [args.chatConfig]);
 

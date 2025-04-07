@@ -2,6 +2,7 @@ import { getMagicLink } from "@/actions/auth";
 import { useAPIErrorHandler } from "@/hooks";
 import { onTextInputChange } from "@/utils/client";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const useLoginSection = () => {
 	const [email, setEmail] = useState<string>("");
@@ -12,20 +13,22 @@ export const useLoginSection = () => {
 
 	const onLoginClickHandler = async () => {
 		if (isLoading) {
-			console.log("Loading");
+			toast.error("Loading");
 			return;
 		}
 
 		setIsLoading(true);
 
 		try {
-			const response = await getMagicLink({
+			const res = await getMagicLink({
 				email,
 			});
 
 			setIsLoading(false);
 
-			console.log(response);
+			console.log(res);
+
+			toast.success("Email Sent!");
 		} catch (error) {
 			setIsLoading(false);
 
