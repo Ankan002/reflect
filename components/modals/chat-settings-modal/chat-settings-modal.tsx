@@ -35,6 +35,8 @@ const ChatSettingsModal = (props: Props) => {
 		onClose,
 		pickContext,
 		togglePickContext,
+		isUpdatingSettings,
+		onSaveClick,
 	} = useChatSettingsModal({
 		chatConfig,
 		chatId,
@@ -88,7 +90,13 @@ const ChatSettingsModal = (props: Props) => {
 					</div>
 
 					<div className="mt-5 flex justify-end items-center">
-						<Button className="cursor-pointer">Save</Button>
+						<Button
+							className="cursor-pointer"
+							disabled={isUpdatingSettings}
+							onClick={onSaveClick}
+						>
+							Save
+						</Button>
 					</div>
 				</div>
 			</DialogContent>

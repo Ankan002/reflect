@@ -29,6 +29,7 @@ const ChatScreen = (props: Props) => {
 		creatingImages,
 		isSettingsModalOpen,
 		toggleSettingsModal,
+		onUpdateChatConfig,
 	} = useChatScreen({ id });
 
 	return (
@@ -142,7 +143,7 @@ const ChatScreen = (props: Props) => {
 
 			{chat && chatConfig && isSettingsModalOpen && (
 				<ChatSettingsModal
-					onUpdate={() => {}}
+					onUpdate={onUpdateChatConfig}
 					chatConfig={chatConfig}
 					chatId={chat.id}
 					isOpen={isSettingsModalOpen}

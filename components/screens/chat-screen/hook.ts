@@ -146,6 +146,10 @@ export const useChatScreen = (args: Args) => {
 		}
 	};
 
+	const onUpdateChatConfig = (chatConfig: chat_config) => {
+		setChatConfig(chatConfig);
+	};
+
 	useEffect(() => {
 		fetchChat();
 		fetchMessages();
@@ -163,5 +167,6 @@ export const useChatScreen = (args: Args) => {
 		creatingImages,
 		isSettingsModalOpen,
 		toggleSettingsModal: toggleBooleanState(setIsSettingsModalOpen),
+		onUpdateChatConfig,
 	};
 };

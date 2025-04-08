@@ -26,11 +26,13 @@ const ArgsSchema = z.object({
 		.optional(),
 });
 
+type Args = z.infer<typeof ArgsSchema>;
+
 interface ResponseData {
 	chat_config: chat_config;
 }
 
-export const updateImageChatConfigAction = actionHandler<ResponseData>(
+export const updateImageChatConfigAction = actionHandler<ResponseData, Args>(
 	async (args) => {
 		const requestValidationResult = ArgsSchema.safeParse(args);
 
