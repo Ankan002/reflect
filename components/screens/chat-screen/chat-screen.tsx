@@ -6,9 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Send, Settings } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChatSettingsModal } from "@/components/modals";
+import { ImageCard } from "@/components/common";
 
 interface Props {
 	id: string;
@@ -97,19 +97,9 @@ const ChatScreen = (props: Props) => {
 											<div className="w-full max-w-[500px] flex flex-wrap">
 												{message.images!.map(
 													(image) => (
-														<Image
+														<ImageCard
+															image={image}
 															key={image.id}
-															src={
-																image.public_url
-															}
-															alt={image.id}
-															height={1024}
-															width={1024}
-															className="m-1 rounded-md border border-primary w-64 h-64"
-															style={{
-																aspectRatio:
-																	"1:1",
-															}}
 														/>
 													),
 												)}

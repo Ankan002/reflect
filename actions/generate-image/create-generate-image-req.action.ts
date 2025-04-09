@@ -135,35 +135,6 @@ export const createGenerateImageRequestAction = actionHandler<
 
 	const fileResponses = await Promise.allSettled(s3ImagePromises);
 
-	// const s3Client = getS3Client();
-	// const fileUrls = [];
-
-	// if (replicateResponses instanceof Array) {
-	// 	for (const replicateResponse of replicateResponses) {
-	// 		if (replicateResponse instanceof ReadableStream) {
-	// 			const fileBuffer = await new Response(
-	// 				replicateResponse,
-	// 			).arrayBuffer();
-
-	// 			const fileKey = `${randomUUID()}.${
-	// 				chat.chat_config.output_format
-	// 			}`;
-
-	// 			const command = new PutObjectCommand({
-	// 				Bucket: S3_BUCKET_NAME,
-	// 				Key: fileKey,
-	// 				Body: Buffer.from(fileBuffer),
-	// 				ACL: "public-read",
-	// 			});
-
-	// 			await s3Client.send(command);
-
-	// 			const url = `${S3_ENDPOINT}/${S3_BUCKET_NAME}/${fileKey}`;
-	// 			fileUrls.push(url);
-	// 		}
-	// 	}
-	// }
-
 	const userMessage = await prisma.image_gen_chat_message.create({
 		data: {
 			prompt: argsData.prompt,
@@ -199,15 +170,6 @@ export const createGenerateImageRequestAction = actionHandler<
 	await prisma.ai_image.createMany({
 		data: multipleImagesData,
 	});
-
-	// await prisma.ai_image.createMany({
-	// 	data: fileUrls.map((url) => ({
-	// 		message_id: aiMessage.id,
-	// 		aspect_ratio: chat.chat_config!.aspect_ratio,
-	// 		asset_url: url,
-	// 		user_id: id,
-	// 	})),
-	// });
 
 	const updatedAIMessage = await prisma.image_gen_chat_message.findUnique({
 		where: {
