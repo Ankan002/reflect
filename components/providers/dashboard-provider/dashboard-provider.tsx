@@ -51,7 +51,7 @@ const DashboardProvider = (props: Props) => {
 								size={"icon"}
 								onClick={props.onClick}
 								variant={"ghost"}
-								className="cursor-pointer"
+								className="cursor-pointer dark:text-primary dark:hover:text-primary dark:hover:bg-primary/20"
 							>
 								<props.ActionButtonIcon size={35} />
 							</Button>
