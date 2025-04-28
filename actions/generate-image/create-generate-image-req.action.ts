@@ -99,11 +99,15 @@ export const createGenerateImageRequestAction = actionHandler<
 		throw new APIError("Chat not found", 404);
 	}
 
-	console.log(argsData.prompt);
+	console.log(
+		!chat.chat_config.use_context
+			? argsData.prompt
+			: `${oldChatContext} ${argsData.prompt}`,
+	);
 
 	const imagesGenerated = await generateNewImage({
 		style: chat.chat_config.image_style,
-		prompt: argsData.avoid_context
+		prompt: !chat.chat_config.use_context
 			? argsData.prompt
 			: `${oldChatContext} ${argsData.prompt}`,
 		admin: user.role === "admin" || user.role === "dev_friend",
